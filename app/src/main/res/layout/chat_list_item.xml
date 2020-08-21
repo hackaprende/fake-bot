@@ -6,13 +6,18 @@
 
     </data>
 
-    <TextView
-        android:id="@+id/chat_list_item_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
-        android:padding="16dp"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-        tools:text="Hi there!" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/chat_list_item_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:padding="16dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            tools:text="Hi there!" />
+    </RelativeLayout>
 </layout>

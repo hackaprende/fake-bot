@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">FakeBot</string>
     <string name="write_your_message_here">Write your message here</string>
+    <string name="message_must_not_be_empty">Message must not be empty.</string>
 </resources>

@@ -33,13 +33,15 @@ class ChatAdapter: ListAdapter<ChatMessage, ChatAdapter.ViewHolder>(DiffCallback
     inner class ViewHolder(private val binding: ChatListItemBinding):
         RecyclerView.ViewHolder(binding.root) {
         fun bind(chatMessage: ChatMessage) {
-            binding.chatListItemMessage.text = chatMessage.message
-
+            val chatListItemMessage = binding.chatListItemMessage
             if (chatMessage.isMine) {
-                binding.chatListItemMessage.gravity = Gravity.START
+                chatListItemMessage.gravity = Gravity.END
             } else {
-                binding.chatListItemMessage.gravity = Gravity.END
+                chatListItemMessage.gravity = Gravity.START
             }
+
+            chatListItemMessage.text = chatMessage.message
+            binding.executePendingBindings()
         }
     }
 }
