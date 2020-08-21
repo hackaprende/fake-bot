@@ -1,14 +1,16 @@
 package com.hackaprende.fakebot
 
+import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hackaprende.fakebot.databinding.ChatListItemBinding
 
-class ChatAdapter: ListAdapter<ChatMessage, ChatAdapter.ViewHolder>(DiffCallback) {
+class ChatAdapter(private val context: Context): ListAdapter<ChatMessage, ChatAdapter.ViewHolder>(DiffCallback) {
     companion object DiffCallback : DiffUtil.ItemCallback<ChatMessage>() {
         override fun areItemsTheSame(oldItem: ChatMessage, newItem: ChatMessage): Boolean {
             return oldItem.timestamp == newItem.timestamp
@@ -34,10 +36,12 @@ class ChatAdapter: ListAdapter<ChatMessage, ChatAdapter.ViewHolder>(DiffCallback
         RecyclerView.ViewHolder(binding.root) {
         fun bind(chatMessage: ChatMessage) {
             val chatListItemMessage = binding.chatListItemMessage
-            if (chatMessage.isMine) {
+            if (chatMessage.isQuestion) {
                 chatListItemMessage.gravity = Gravity.END
+                chatListItemMessage.setBackgroundColor(ContextCompat.getColor(context, R.color.green))
             } else {
                 chatListItemMessage.gravity = Gravity.START
+                chatListItemMessage.setBackgroundColor(ContextCompat.getColor(context, R.color.blue))
             }
 
             chatListItemMessage.text = chatMessage.message

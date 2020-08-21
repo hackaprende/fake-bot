@@ -11,8 +11,8 @@ class MainActivity : AppCompatActivity() {
     private val chatMessageList = mutableListOf<ChatMessage>()
     private lateinit var adapter: ChatAdapter
     private lateinit var binding: ActivityMainBinding
-    private val responses = arrayOf("Of course", "Nope", "No", "Yes", "Someday",
-        "Maybe", "Ask Again")
+    private val responses = arrayOf("Si", "Pregunta de nuevo", "No", "Es muy probable", "No lo creo",
+        "Tal vez", "No se 😓")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.chatRecycler.layoutManager = LinearLayoutManager(this)
-        adapter = ChatAdapter()
+        adapter = ChatAdapter(this)
         binding.chatRecycler.adapter = adapter
 
         setupSendMessageLayout(binding)
@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
                 val chatMessage = ChatMessage(System.currentTimeMillis(), message, true)
                 chatMessageList.add(chatMessage)
                 adapter.submitList(chatMessageList)
+                binding.messageEdit.setText("")
                 createMessageResponse()
             }
         }
