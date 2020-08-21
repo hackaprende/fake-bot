@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FakeBot</string>
+    <string name="write_your_message_here">Write your message here</string>
 </resources>
