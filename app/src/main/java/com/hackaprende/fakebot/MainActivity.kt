@@ -2,6 +2,7 @@ package com.hackaprende.fakebot
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hackaprende.fakebot.databinding.ActivityMainBinding
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
                 adapter.submitList(chatMessageList)
                 binding.messageEdit.setText("")
                 createMessageResponse()
+                binding.chatEmptyView.visibility = View.GONE
             }
         }
     }
