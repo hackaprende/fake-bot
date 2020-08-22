@@ -1,30 +1,39 @@
 package com.hackaprende.fakebot
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hackaprende.fakebot.databinding.ActivityMainBinding
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    private val chatMessageList = mutableListOf<ChatMessage>()
     private lateinit var adapter: ChatAdapter
     private lateinit var binding: ActivityMainBinding
-    private lateinit var handler: Handler
-    private val responses = arrayOf("Si", "Pregunta de nuevo", "No", "Es muy probable", "No lo creo",
-        "Tal vez", "No se 😓")
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         binding.chatRecycler.layoutManager = LinearLayoutManager(this)
         adapter = ChatAdapter(this)
         binding.chatRecycler.adapter = adapter
+
+        viewModel.chatMessageListLiveData.observe(this, Observer {
+            chatMessageList ->
+            adapter.submitList(chatMessageList)
+            binding.chatRecycler.scrollToPosition(chatMessageList.size - 1)
+            binding.chatEmptyView.visibility = if (chatMessageList.isEmpty()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        })
 
         setupSendMessageLayout(binding)
     }
@@ -37,30 +46,11 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT).show()
             } else {
                 val chatMessage = ChatMessage(System.currentTimeMillis(), message, true)
-                chatMessageList.add(chatMessage)
-                adapter.submitList(chatMessageList)
+                viewModel.addMessage(chatMessage)
+                viewModel.createResponse()
                 binding.messageEdit.setText("")
-                createMessageResponse()
-                binding.chatEmptyView.visibility = View.GONE
             }
         }
     }
 
-    private fun createMessageResponse() {
-        if (!::handler.isInitialized) {
-            handler = Handler()
-        }
-
-        val runnable = Runnable {
-            val random = Random().nextInt(responses.size)
-
-            val response = responses[random]
-            val chatMessage = ChatMessage(System.currentTimeMillis(), response, false)
-            chatMessageList.add(chatMessage)
-            adapter.submitList(chatMessageList)
-            binding.chatRecycler.scrollToPosition(chatMessageList.size - 1)
-        }
-
-        handler.postDelayed(runnable, 2000)
-    }
 }
